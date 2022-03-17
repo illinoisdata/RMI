@@ -99,14 +99,6 @@ int main(int argc, char* argv[]) {
     
     if (t_idx + 1 == count_milestone) {
 	timestamps.push_back(report_t(t_idx, count_milestone, last_count_milestone, last_elapsed, start_t));    
-        //auto curr_time = std::chrono::high_resolution_clock::now();
-	//auto time_elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(curr_time - start_t).count();
-	//std::cout << "t = " << time_elapsed << " ns: " << t_idx + 1 
-	//	  << " counts, tot " << (time_elapsed) / (t_idx + 1) 
-	//	  << "/op, seg " << (time_elapsed - last_elapsed) / (t_idx + 1 - last_count_milestone) << "/op" << std::endl;  
-	//last_elapsed = time_elapsed;
-        //last_count_milestone = count_milestone;	
-	//count_milestone = ceil(((double) count_milestone) * freq_mul);  // next milestone to print       
     }
 
     if (t_idx % 10000 == 0) { // UNCOMMENT to debug
