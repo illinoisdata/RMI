@@ -17,11 +17,6 @@
 
 double report_t(size_t t_idx, size_t &count_milestone, size_t &last_count_milestone, long long &last_elapsed, std::chrono::time_point<std::chrono::high_resolution_clock> start_t) {
   const double freq_mul = 1.1;
-  auto lookups_end_time = std::chrono::high_resolution_clock::now();
-  auto lookup_time = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                      lookups_end_time - start_t)
-                      .count();
-  std::cout << "<<< " << lookup_time << " ns " << " to finish " << (t_idx + 1) << " queries." << std::endl;
   auto curr_time = std::chrono::high_resolution_clock::now();
   long long time_elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(curr_time - start_t).count();
   std::cout << "t = " << time_elapsed << " ns: " << t_idx + 1
@@ -30,7 +25,7 @@ double report_t(size_t t_idx, size_t &count_milestone, size_t &last_count_milest
   last_elapsed = time_elapsed;
   last_count_milestone = count_milestone;
   count_milestone = ceil(((double) count_milestone) * freq_mul);  // next milestone to print
-  return std::chrono::duration<double>(lookup_time).count();
+  return std::chrono::duration<double>(time_elapsed).count();
 }
 
 
@@ -77,8 +72,8 @@ int main(int argc, char* argv[]) {
   // const auto freq_mul = 1.1;
   size_t last_count_milestone = 0;
   size_t count_milestone = 1;
-  long long last_elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(start_t - start_t).count();
   auto timestamps = std::vector<double>();
+  long long last_elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(start_t - start_t).count();
   for (size_t t_idx = 0; t_idx < queries.size(); t_idx++) {
     // TODO: sample this
     uint64_t lookup = queries[t_idx];
@@ -97,7 +92,7 @@ int main(int argc, char* argv[]) {
 		  << " RMI answer:" << true_index << std::endl; 
     }
     
-    if (t_idx + 1 == count_milestone) {
+    if (t_idx + 1 == count_milestone || t_idx + 1 == queries.size()) {
 	timestamps.push_back(report_t(t_idx, count_milestone, last_count_milestone, last_elapsed, start_t));    
     }
 
