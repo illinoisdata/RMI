@@ -23,28 +23,28 @@ test: test_rmi_whole test_rmi_mmap
 test_rmi_whole: ../rmi
 	echo "Running rmi whole"
 
-	rm -rf storage/osm_cellids_200M_uint64_rmi_whole
-	mkdir storage/osm_cellids_200M_uint64_rmi_whole
-	../rmi data/osm_cellids_200M_uint64 rmi robust_linear,linear 16777216
-	mv rmi.cpp rmi.h rmi_data.h rmi_data storage/osm_cellids_200M_uint64_rmi_whole
+# 	rm -rf storage/fb_200M_uint64_rmi_whole
+# 	mkdir storage/fb_200M_uint64_rmi_whole
+# 	../rmi data-sosd/fb_200M_uint64 rmi robust_linear,linear 16777216
+# 	mv rmi.cpp rmi.h rmi_data.h rmi_data storage/fb_200M_uint64_rmi_whole
 
-	$(CXX) $(CXXFLAGS) main.cpp storage/osm_cellids_200M_uint64_rmi_whole/rmi.cpp -I storage/osm_cellids_200M_uint64_rmi_whole -I . -o main_osm_cellids_200M_uint64_rmi_whole $(CXXBACKFLAGS)
+	$(CXX) $(CXXFLAGS) main.cpp storage/fb_200M_uint64_rmi_whole/rmi.cpp -I storage/fb_200M_uint64_rmi_whole -I . -o main_fb_200M_uint64_rmi_whole $(CXXBACKFLAGS)
 
 	bash ~/reload_nfs.sh
-	./main_osm_cellids_200M_uint64_rmi_whole --data_path=data/osm_cellids_200M_uint64 --key_path=data/osm_cellids_200M_uint64_keyset --rmi_data_path=storage/osm_cellids_200M_uint64_rmi_whole/rmi_data --out_path=out_main_osm_cellids_200M_uint64_rmi_whole.txt 2>& 1 | tee log.txt
+	./main_fb_200M_uint64_rmi_whole --data_path=data-sosd/fb_200M_uint64 --key_path=keyset/fb_200M_uint64_ks --rmi_data_path=storage/fb_200M_uint64_rmi_whole/rmi_data --out_path=out_main_fb_200M_uint64_rmi_whole.txt 2>& 1 | tee log.txt
 
 test_rmi_mmap: ../rmi
 	echo "Running rmi mmap"
 
-	rm -rf storage/osm_cellids_200M_uint64_rmi_mmap
-	mkdir storage/osm_cellids_200M_uint64_rmi_mmap
-	../rmi data/osm_cellids_200M_uint64 rmi robust_linear,linear 16777216 --use-mmap
-	mv rmi.cpp rmi.h rmi_data.h rmi_data storage/osm_cellids_200M_uint64_rmi_mmap
+# 	rm -rf storage/fb_200M_uint64_rmi_mmap
+# 	mkdir storage/fb_200M_uint64_rmi_mmap
+# 	../rmi data-sosd/fb_200M_uint64 rmi robust_linear,linear 16777216 --use-mmap
+# 	mv rmi.cpp rmi.h rmi_data.h rmi_data storage/fb_200M_uint64_rmi_mmap
 
-	$(CXX) $(CXXFLAGS) main.cpp storage/osm_cellids_200M_uint64_rmi_mmap/rmi.cpp -I storage/osm_cellids_200M_uint64_rmi_mmap -I . -o main_osm_cellids_200M_uint64_rmi_mmap $(CXXBACKFLAGS)
+	$(CXX) $(CXXFLAGS) main.cpp storage/fb_200M_uint64_rmi_mmap/rmi.cpp -I storage/fb_200M_uint64_rmi_mmap -I . -o main_fb_200M_uint64_rmi_mmap $(CXXBACKFLAGS)
 	bash ~/reload_nfs.sh
 
-	./main_osm_cellids_200M_uint64_rmi_mmap --data_path=data/osm_cellids_200M_uint64 --key_path=data/osm_cellids_200M_uint64_keyset --rmi_data_path=storage/osm_cellids_200M_uint64_rmi_mmap/rmi_data --out_path=out_main_osm_cellids_200M_uint64_rmi_mmap.txt 2>& 1 | tee log.txt
+	./main_fb_200M_uint64_rmi_mmap --data_path=data-sosd/fb_200M_uint64 --key_path=keyset/fb_200M_uint64_ks --rmi_data_path=storage/fb_200M_uint64_rmi_mmap/rmi_data --out_path=out_main_fb_200M_uint64_rmi_mmap.txt 2>& 1 | tee log.txt
 
 
 result_all: train_all

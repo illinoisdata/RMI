@@ -55,6 +55,12 @@ int main(int argc, char* argv[]) {
     queries.push_back(std::stoull(key));
     expected_ans.push_back(std::stoull(exp));
   }
+  std::cout << "Read " << queries.size() << " query keys" << std::endl;
+
+  // print rmi constants
+  std::cout << "RMI_SIZE: " << rmi::RMI_SIZE
+    << ", BUILD_TIME_NS: " << rmi::BUILD_TIME_NS
+    << ", from" << data_path << std::endl;
 
   // start timer
   auto start_t = std::chrono::high_resolution_clock::now();
@@ -88,24 +94,29 @@ int main(int argc, char* argv[]) {
     size_t true_index = data.rank_within(lookup, guess_left, guess_right);
    
     if (answer != true_index) {
-	std::cout << "ERROR: Incorrect RMI Index. Expected value: " << answer
-		  << " RMI answer:" << true_index << std::endl; 
+      std::cout << "ERROR: Incorrect RMI Index. Expected value: " << answer
+		    << " RMI answer:" << true_index << std::endl; 
     }
     
     if (t_idx + 1 == count_milestone || t_idx + 1 == queries.size()) {
-	timestamps.push_back(report_t(t_idx, count_milestone, last_count_milestone, last_elapsed, start_t));    
+      timestamps.push_back(report_t(
+        t_idx,
+        count_milestone,
+        last_count_milestone,
+        last_elapsed,
+        start_t));
     }
 
-    if (t_idx % 10000 == 0) { // UNCOMMENT to debug
-      // compute error, TODO: mute this?
-      uint64_t diff = (rmi_guess > true_index ? rmi_guess - true_index : true_index - rmi_guess);
+    // if (t_idx % 10000 == 0) { // UNCOMMENT to debug
+    //   // compute error, TODO: mute this?
+    //   uint64_t diff = (rmi_guess > true_index ? rmi_guess - true_index : true_index - rmi_guess);
 
-      // print message
-      std::cout << "Search key: " << lookup
-                << " RMI guess: " << rmi_guess << " +/- " << err
-                << " Key at " << true_index << ": " << data[true_index]
-                << " diff: " << diff << std::endl;
-    }
+    //   // print message
+    //   std::cout << "Search key: " << lookup
+    //             << " RMI guess: " << rmi_guess << " +/- " << err
+    //             << " Key at " << true_index << ": " << data[true_index]
+    //             << " diff: " << diff << std::endl;
+    // }
   }
 
   // write result to file

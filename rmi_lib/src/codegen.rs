@@ -113,7 +113,7 @@ impl LayerParams {
     }
 
     fn pointer_type(&self) -> &'static str {
-        assert!(self.requires_malloc());
+        // assert!(self.requires_malloc());
         return match self {
             LayerParams::Array(_, _, params) => params[0].c_type(),
             LayerParams::MixedArray(_, _, _) => "char",
@@ -366,7 +366,7 @@ fn params_for_layer(layer_idx: usize,
     let params_per_model = models[0].params().len();
     let params = models.iter().flat_map(|m| m.params()).collect();
     return LayerParams::new(layer_idx,
-                            models.len() > 1, // array access on non-singleton layers
+                            models.len() > 0, // array access on non-singleton layers
                             params_per_model,
                             params);
 }
@@ -574,8 +574,8 @@ fn generate_code<T: Write>(
                   read_code.push("  {".to_string());
                   read_code.push(format!("    std::filesystem::path p = std::filesystem::path(dataPath) / \"{ns}_{fn}\";",
                                          ns=namespace, fn=array_name!(idx)));
-                  read_code.push(format!("    {fn}_MANAGER = new KeyArray<char>(p.c_str(), {size});",
-                                         fn=array_name!(idx), size=lp.size()));
+                  read_code.push(format!("    {fn}_MANAGER = new KeyArray<{t}>(p.c_str(), {size});",
+                                         fn=array_name!(idx), size=lp.size(), t=lp.pointer_type()));
                   read_code.push(format!("    {fn} = {fn}_MANAGER->raw_pointer();", fn=array_name!(idx)));
                   read_code.push("  }".to_string());
                 }
