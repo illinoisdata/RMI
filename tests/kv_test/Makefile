@@ -48,10 +48,10 @@ test_rmi_mmap: ../rmi
 
 
 result_all: train_all
-	(bash result_all.sh) 2>& 1 | tee log.txt
+	(bash result_all.sh ${ROOT} ${RELOAD} ${STORAGE} ${OUT}) 2>& 1 | tee log.txt
 
-train_all: ../rmi
-	(export CXX='$(CXX)'; export CXXFLAGS='$(CXXFLAGS)'; export CXXBACKFLAGS='$(CXXBACKFLAGS)'; bash train_all.sh) 2>& 1 | tee log.txt
+train_all: 
+	(export CXX='$(CXX)'; export CXXFLAGS='$(CXXFLAGS)'; export CXXBACKFLAGS='$(CXXBACKFLAGS)'; bash train_all.sh ${ROOT} ${STORAGE}) 2>& 1 | tee log.txt
 
 .PHONY: clean
 clean:
