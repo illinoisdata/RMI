@@ -4,6 +4,9 @@ ROOT=$1
 RELOAD=$2
 STORAGE=$3
 OUT=$4
+DATA_PATH=$5
+KEYSET_PATH=$6
+
 OUT_PATH=${ROOT}/${OUT}
 STORAGE_PATH=${ROOT}/${STORAGE}
 
@@ -23,6 +26,6 @@ for ((i = 0; i < ${#DATASET_NAMES[@]}; i++)) do
     dataset_name="${DATASET_NAMES[$i]}"
     echo ">>> ${dataset_name} ${j}"
     bash ${RELOAD}
-    ${ROOT}/binary/main_${dataset_name}_rmi_mmap --data_path=${HOME}/data/${dataset_name} --key_path=${HOME}/keyset/${dataset_name}_ks_${j} --rmi_data_path=${STORAGE_PATH}/${dataset_name}_rmi_mmap/rmi_data --out_path=${OUT_PATH}/out_main_${dataset_name}_rmi_mmap.txt 2>& 1 | tee log.txt
+    ${ROOT}/binary/main_${dataset_name}_rmi_mmap --data_path=${DATA_PATH}/${dataset_name} --key_path=${KEYSET_PATH}/${dataset_name}_ks_${j} --rmi_data_path=${STORAGE_PATH}/${dataset_name}_rmi_mmap/rmi_data --out_path=${OUT_PATH}/out_main_${dataset_name}_rmi_mmap.txt 2>& 1 | tee log.txt
   done
 done

@@ -47,11 +47,14 @@ test_rmi_mmap: ../rmi
 	./main_fb_200M_uint64_rmi_mmap --data_path=data-sosd/fb_200M_uint64 --key_path=keyset/fb_200M_uint64_ks --rmi_data_path=storage/fb_200M_uint64_rmi_mmap/rmi_data --out_path=out_main_fb_200M_uint64_rmi_mmap.txt 2>& 1 | tee log.txt
 
 
-result_all: train_all
-	(bash result_all.sh ${ROOT} ${RELOAD} ${STORAGE} ${OUT}) 2>& 1 | tee log.txt
+result_all: train_all 
+	(bash result_all.sh ${ROOT} ${RELOAD} ${STORAGE} ${OUT} ${DATA_PATH} ${KEYSET_PATH}) 2>& 1 | tee log.txt
 
 train_all: 
-	(export CXX='$(CXX)'; export CXXFLAGS='$(CXXFLAGS)'; export CXXBACKFLAGS='$(CXXBACKFLAGS)'; bash train_all.sh ${ROOT} ${STORAGE}) 2>& 1 | tee log.txt
+	(export CXX='$(CXX)'; export CXXFLAGS='$(CXXFLAGS)'; export CXXBACKFLAGS='$(CXXBACKFLAGS)'; bash train_all.sh ${ROOT} ${STORAGE} ${DATA_PATH}) 2>& 1 | tee log.txt
+
+scale:
+	(export CXX='$(CXX)'; export CXXFLAGS='$(CXXFLAGS)'; export CXXBACKFLAGS='$(CXXBACKFLAGS)'; bash scale.sh ${ROOT} ${DATA_PATH}) 2>& 1 | tee scale-log.txt
 
 .PHONY: clean
 clean:
