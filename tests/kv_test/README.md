@@ -9,7 +9,7 @@ Please follow [dataset](https://github.com/illinoisdata/airindex-public/blob/mai
 Please follow [instructions here](https://github.com/illinoisdata/RMI/blob/master/README.md) to build the binaries and use RMI optimizer for tuning. To build indexes for all datasets
 
 ```
-make train_all ROOT=file:///path/to/output STORAGE=storage OUT=out DATA_PATH=file:///path/to/data
+make train_all ROOT=/path/to/output STORAGE=storage OUT=out DATA_PATH=/path/to/data
 ```
 
 ## Benchmark (5.2)
@@ -17,7 +17,7 @@ make train_all ROOT=file:///path/to/output STORAGE=storage OUT=out DATA_PATH=fil
 Benchmark over 40 key set of 1M keys
 
 ```
-make result_all ROOT=file:///path/to/output RELOAD=~/reload_local.sh STORAGE=storage OUT=out DATA_PATH=file:///path/to/data KEYSET_PATH=file:///path/to/keyset
+make result_all ROOT=/path/to/output RELOAD=~/reload_local.sh STORAGE=storage OUT=out DATA_PATH=/path/to/data KEYSET_PATH=/path/to/keyset
 ```
 
 The measurements will be recorded in `/path/to/output/out` folder.
@@ -27,6 +27,6 @@ The measurements will be recorded in `/path/to/output/out` folder.
 To measure the build time, run the build script.
 
 ```
-make scale ROOT=file:///path/to/output DATA_PATH=file:///path/to/data
+make scale ROOT=/path/to/output DATA_PATH=/path/to/data
 ```
 
