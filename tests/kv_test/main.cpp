@@ -38,6 +38,10 @@ int main(int argc, char* argv[]) {
   std::string key_path = get_required(flags, "key_path");
   std::string rmi_data_path = get_required(flags, "rmi_data_path");
   std::string out_path = get_required(flags, "out_path");
+  std::string num_samples_str = get_with_default(flags, "num_samples", "0");  // number of queries
+  size_t num_samples = 0;
+  std::stringstream(num_samples_str) >> num_samples;
+  std::cout << "num_samples= " << num_samples << std::endl;
 
   auto queries = std::vector<uint64_t>();
   auto expected_ans = std::vector<uint64_t>();
@@ -55,7 +59,10 @@ int main(int argc, char* argv[]) {
     queries.push_back(std::stoull(key));
     expected_ans.push_back(std::stoull(exp));
   }
-  std::cout << "Read " << queries.size() << " query keys" << std::endl;
+  if (num_samples == 0) {
+    num_samples = queries.size();
+  }
+  std::cout << "Read " << queries.size() << " query keys" << ", using " << num_samples << " keys" << std::endl;
 
   // print rmi constants
   std::cout << "RMI_SIZE: " << rmi::RMI_SIZE
@@ -80,7 +87,7 @@ int main(int argc, char* argv[]) {
   size_t count_milestone = 1;
   auto timestamps = std::vector<double>();
   long long last_elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(start_t - start_t).count();
-  for (size_t t_idx = 0; t_idx < queries.size(); t_idx++) {
+  for (size_t t_idx = 0; t_idx < num_samples; t_idx++) {
     // TODO: sample this
     uint64_t lookup = queries[t_idx];
     uint64_t answer = expected_ans[t_idx];	
@@ -98,7 +105,7 @@ int main(int argc, char* argv[]) {
 		    << " RMI answer:" << true_index << std::endl; 
     }
     
-    if (t_idx + 1 == count_milestone || t_idx + 1 == queries.size()) {
+    if (t_idx + 1 == count_milestone || t_idx + 1 == num_samples) {
       timestamps.push_back(report_t(
         t_idx,
         count_milestone,
