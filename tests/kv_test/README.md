@@ -8,11 +8,13 @@ Please follow [dataset](https://github.com/illinoisdata/airindex-public/blob/mai
 
 Please follow [instructions here](https://github.com/illinoisdata/RMI/blob/master/README.md) to build the binaries and use RMI optimizer for tuning. To build indexes for all datasets
 
+Edit `train_all.sh` to change RMI configuration for each dataset.
+
 ```
 make train_all ROOT=/path/to/output STORAGE=storage OUT=out DATA_PATH=/path/to/data
 ```
 
-## Benchmark (5.2)
+## Benchmark (6.2 & 6.4)
 
 Benchmark over 40 key set of 1M keys
 
@@ -22,7 +24,11 @@ make result_all ROOT=/path/to/output RELOAD=~/reload_local.sh STORAGE=storage OU
 
 The measurements will be recorded in `/path/to/output/out` folder.
 
-## Build Scalability (5.6)
+## All Configurations (6.5)
+
+The RMI optimizer should output 10 different configurations varying model type and size. Select each of them and edit `train_all.sh` to build and benchmark one by one.
+
+## Build Scalability (6.7)
 
 To measure the build time, run the build script.
 
